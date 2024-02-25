@@ -1,15 +1,29 @@
 package main
 
 import (
-	"library/pkg/handlers"
-
-	"github.com/gofiber/fiber"
+	"fmt"
+	"library/internal/db"
+	"library/pkg/repositories"
+	"log"
 )
 
 func main() {
-	app := fiber.New()
+	db, err := db.NewDB()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	app.Get("/get", handlers.GetBooks)
+	rp := repositories.NewBookRepository(db)
 
-	app.Listen(":4444")
+	/*
+		rp.AddBook(&models.Book{
+			Name:   "Martin Eden",
+			Author: "Jack London",
+			Year:   2001,
+		})
+	*/
+
+	rp.RemoveBook(2)
+
+	fmt.Println(rp.GetBooks())
 }

@@ -2,7 +2,10 @@ module library
 
 go 1.22.0
 
-require github.com/gofiber/fiber v1.14.6
+require (
+	github.com/gofiber/fiber v1.14.6
+	github.com/lib/pq v1.10.9
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.0 // indirect
