@@ -1,16 +1,23 @@
 package main
 
 import (
+	"library/internal/db"
 	"library/pkg/handlers"
 	"library/pkg/repositories"
 	"library/pkg/services"
+	"log"
 
 	"github.com/gofiber/fiber"
 )
 
 func main() {
-	bookRepo := repositories.NewMockBookRepository()
-	bookService := services.NewBookService(&bookRepo)
+	db, err := db.NewDB()
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	bookRepo := repositories.NewPsqlBookRepository(db)
+	bookService := services.NewBookService(bookRepo)
 	bookHandler := handlers.NewBookHandler(&bookService)
 
 	app := fiber.New()

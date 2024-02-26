@@ -6,8 +6,8 @@ type mockBookRepository struct {
 	books []models.Book
 }
 
-func NewMockBookRepository() mockBookRepository {
-	return mockBookRepository{
+func NewMockBookRepository() BookRepository {
+	return &mockBookRepository{
 		books: []models.Book{
 			{ID: 1, Name: "Martin Eden", Author: "Jack London", Year: 1909},
 			{ID: 2, Name: "To Kill a Mockingbird", Author: "Harper Lee", Year: 1960},
