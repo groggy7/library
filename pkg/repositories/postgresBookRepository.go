@@ -9,7 +9,7 @@ type psqlBookRepository struct {
 	db *sql.DB
 }
 
-func NewBookRepository(db *sql.DB) BookRepository {
+func NewPsqlBookRepository(db *sql.DB) BookRepository {
 	return &psqlBookRepository{db: db}
 }
 
