@@ -51,7 +51,7 @@ func (p *psqlBookRepository) GetBooks() ([]models.Book, error) {
 	return books, nil
 }
 
-func (p *psqlBookRepository) RemoveBook(id int) error {
+func (p *psqlBookRepository) DeleteBook(id int) error {
 	stmt, err := p.db.Prepare("DELETE FROM books WHERE ID = $1")
 	if err != nil {
 		return err

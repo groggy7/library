@@ -24,7 +24,7 @@ func (m *mockBookRepository) GetBooks() ([]models.Book, error) {
 	return m.books, nil
 }
 
-func (m *mockBookRepository) RemoveBook(id int) error {
+func (m *mockBookRepository) DeleteBook(id int) error {
 	for i, book := range m.books {
 		if id == book.ID {
 			m.books = append(m.books[:i], m.books[i+1:]...)
