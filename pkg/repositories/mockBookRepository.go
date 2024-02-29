@@ -16,6 +16,8 @@ func NewMockBookRepository() BookRepository {
 }
 
 func (m *mockBookRepository) AddBook(book *models.Book) error {
+	id := len(m.books) + 1
+	book.ID = id
 	m.books = append(m.books, *book)
 	return nil
 }
