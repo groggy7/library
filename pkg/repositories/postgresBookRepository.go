@@ -1,66 +1,32 @@
 package repositories
 
 import (
-	"database/sql"
 	"library/pkg/models"
+
+	"gorm.io/gorm"
 )
 
 type psqlBookRepository struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewPsqlBookRepository(db *sql.DB) BookRepository {
+func NewPsqlBookRepository(db *gorm.DB) BookRepository {
 	return &psqlBookRepository{db: db}
 }
 
 func (p *psqlBookRepository) AddBook(book *models.Book) error {
-	stmt, err := p.db.Prepare("INSERT INTO books (name, author, year) VALUES ($1, $2, $3)")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	_, err = stmt.Exec(book.Name, book.Author, book.Year)
-	if err != nil {
-		return err
-	}
-	return nil
+	result := p.db.Create(&book)
+	return result.Error
 }
 
 func (p *psqlBookRepository) GetBooks() ([]models.Book, error) {
-	rows, err := p.db.Query("SELECT name, author, year FROM books")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
 	var books []models.Book
-	for rows.Next() {
-		var book models.Book
-		err = rows.Scan(&book.Name, &book.Author, &book.Year)
-		if err != nil {
-			return nil, err
-		}
-		books = append(books, book)
-	}
+	result := p.db.Find(&books)
 
-	if err = rows.Err(); err != nil {
-		return nil, err
-	}
-
-	return books, nil
+	return books, result.Error
 }
 
 func (p *psqlBookRepository) DeleteBook(id int) error {
-	stmt, err := p.db.Prepare("DELETE FROM books WHERE ID = $1")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	_, err = stmt.Exec(id)
-	if err != nil {
-		return nil
-	}
-	return nil
+	result := p.db.Delete(&models.Book{}, id)
+	return result.Error
 }
