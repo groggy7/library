@@ -1,13 +1,13 @@
 package db
 
 import (
-	"database/sql"
-
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func NewDB() (*sql.DB, error) {
-	db, err := sql.Open("postgres", "postgres://root:root@localhost:5432/library?sslmode=disable")
+func NewDB() (*gorm.DB, error) {
+	dsn := "host=localhost user=root password=root dbname=library port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
